@@ -1,7 +1,9 @@
-package com.example;
+package com.slayer_wiki;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+
+import com.slayer_wiki.Overlay.WikiPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -11,29 +13,38 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Example"
+	name = "Slayer Wiki Helper"
 )
-public class ExamplePlugin extends Plugin
+public class SlayerWikiHelperPlugin extends Plugin
 {
 	@Inject
 	private Client client;
 
 	@Inject
-	private ExampleConfig config;
+	private SlayerWikiHelperConfig config;
+
+	@Inject
+	private WikiPanel overlay;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		log.info("Example started!");
+		overlayManager.add(overlay);
+		//log.info("Example started!");
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		log.info("Example stopped!");
+		overlayManager.remove(overlay);
+		//log.info("Example stopped!");
 	}
 
 	@Subscribe
@@ -46,8 +57,8 @@ public class ExamplePlugin extends Plugin
 	}
 
 	@Provides
-	ExampleConfig provideConfig(ConfigManager configManager)
+	SlayerWikiHelperConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ExampleConfig.class);
+		return configManager.getConfig(SlayerWikiHelperConfig.class);
 	}
 }
